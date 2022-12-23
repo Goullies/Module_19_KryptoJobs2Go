@@ -90,28 +90,28 @@ from crypto_wallet import generate_account, get_balance, send_transaction
 candidate_database = {
     "Lane": [
         "Lane",
-        "0xaC8eB8B2ed5C4a0fC41a84Ee4950F417f67029F0",
+        "0x74cF7db0055253606d8AdABaDf54E59D6440fDAF",
         "4.3",
         0.20,
         "Images/lane.jpeg",
     ],
     "Ash": [
         "Ash",
-        "0x2422858F9C4480c2724A309D58Ffd7Ac8bF65396",
+        "0x11883c718c79Ab80146376A9c4E61430Ac33b3d5",
         "5.0",
         0.33,
         "Images/ash.jpeg",
     ],
     "Jo": [
         "Jo",
-        "0x8fD00f170FDf3772C5ebdCD90bF257316c69BA45",
+        "0x8D657C5393B0fA18C5f4c3D279Eb3a431d726E07",
         "4.7",
         0.19,
         "Images/jo.jpeg",
     ],
     "Kendall": [
         "Kendall",
-        "0x8fD00f170FDf3772C5ebdCD90bF257316c69BA45",
+        "0xB7CA1eFe5dFd28968E972D6D15c04c36B74Ad705",
         "4.1",
         0.16,
         "Images/kendall.jpeg",
@@ -174,9 +174,7 @@ st.sidebar.write(account.address)
 # Call `get_balance` function and pass it your account address
 # Write the returned ether balance to the sidebar
 
-ether = get_balance(account.address)
-
-st.sidebar.write(ether)
+st.sidebar.write(get_balance(w3, account.address))
 
 # transaction_hash = send_transaction(w3, account, to, wage)
 
@@ -269,7 +267,7 @@ st.sidebar.markdown("## Total Wage in Ether")
 # Calculate total `wage` for the candidate by multiplying the candidate’s hourly
 # rate from the candidate database (`candidate_database[person][3]`) by the
 # value of the `hours` variable
-wage = hourly_rate * hours
+wage = candidate_database[person][3] * hours
 
 # @TODO
 # Write the `wage` calculation to the Streamlit sidebar
@@ -300,7 +298,7 @@ if st.sidebar.button("Send Transaction"):
     # Call the `send_transaction` function and pass it 3 parameters:
     # Your `account`, the `candidate_address`, and the `wage` as parameters
     # Save the returned transaction hash as a variable named `transaction_hash`
-    transaction_hash = send_transaction(account, candidate_address, wage)
+    transaction_hash = send_transaction(w3, account, candidate_address, wage)
 
     # Markdown for the transaction hash
     st.sidebar.markdown("#### Validated Transaction Hash")
@@ -313,7 +311,7 @@ if st.sidebar.button("Send Transaction"):
 
 # The function that starts the Streamlit application
 # Writes KryptoJobs2Go candidates to the Streamlit page
-get_people()
+get_people(w3)
 
 ################################################################################
 # Step 3: Inspect the Transaction
